@@ -69,16 +69,20 @@ class LicenseFieldForm extends Component {
       required,
       searchConfig,
       serializeLicenses,
+      maxLicenses,
     } = this.props;
 
+    const rights = getIn(values, fieldPath, []);
     const uiRights = getIn(values, uiFieldPath, []);
+
+    const displayAddButtons = rights.length < maxLicenses;
 
     return (
       <DndProvider backend={HTML5Backend}>
         <Form.Field required={required}>
           <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
           <List>
-            {getIn(values, fieldPath, []).map((value, index) => {
+            {rights.map((value, index) => {
               const license = new VisibleLicense(uiRights, value, index);
               return (
                 <LicenseFieldItem
@@ -92,6 +96,7 @@ class LicenseFieldForm extends Component {
                 />
               );
             })}
+            {displayAddButtons && <>
             <LicenseModal
               searchConfig={searchConfig}
               trigger={
@@ -121,6 +126,7 @@ class LicenseFieldForm extends Component {
               mode="custom"
               action="add"
             />
+            </>}
           </List>
         </Form.Field>
       </DndProvider>
@@ -141,6 +147,7 @@ LicenseFieldForm.propTypes = {
   required: PropTypes.bool.isRequired,
   searchConfig: PropTypes.object.isRequired,
   serializeLicenses: PropTypes.func,
+  maxLicenses: PropTypes.number.isRequired,
 };
 
 LicenseFieldForm.defaultProps = {
@@ -171,6 +178,7 @@ LicenseField.propTypes = {
   required: PropTypes.bool,
   serializeLicenses: PropTypes.func,
   uiFieldPath: PropTypes.string,
+  maxLicenses: PropTypes.number,
 };
 
 LicenseField.defaultProps = {
@@ -179,4 +187,5 @@ LicenseField.defaultProps = {
   labelIcon: "drivers license",
   required: false,
   serializeLicenses: undefined,
+  maxLicenses: Infinity
 };
