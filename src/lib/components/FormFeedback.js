@@ -8,6 +8,7 @@
 
 import { i18next } from "@translations/i18next";
 import _get from "lodash/get";
+import _isEmpty from "lodash/isEmpty";
 import _isObject from "lodash/isObject";
 import React, { Component } from "react";
 import { connect } from "react-redux";
@@ -29,6 +30,7 @@ import {
 } from "../state/types";
 import { leafTraverse } from "../utils";
 import PropTypes from "prop-types";
+import { connect as connectFormik } from "formik";
 
 const defaultLabels = {
   "files.enabled": i18next.t("Files"),
@@ -244,13 +246,20 @@ class DisconnectedFormFeedback extends Component {
 
   render() {
     const { errors: errorsProp, actionState } = this.props;
+    const errorsFormik = this.props.formik.errors;
+    let errors = errorsProp || {};
 
-    const errors = errorsProp || {};
-
-    const { feedback, message } = _get(ACTIONS, actionState, {
+    let { feedback, message } = _get(ACTIONS, actionState, {
       feedback: undefined,
       message: undefined,
     });
+
+    // in case there are no prop errors but Formik validation failed, use Formik errors for feedback
+    if (!feedback && !message && !_isEmpty(errorsFormik)) {
+      feedback = "negative";
+      message = i18next.t("Draft could not be saved due to validation errors:");
+      errors = errorsFormik || {};
+    } 
 
     if (!message) {
       // if no message to display, simply return null
@@ -303,4 +312,7 @@ const mapStateToProps = (state) => ({
   errors: state.deposit.errors,
 });
 
-export const FormFeedback = connect(mapStateToProps, null)(DisconnectedFormFeedback);
+export const FormFeedback = connect(
+  mapStateToProps, 
+  null
+)(connectFormik(DisconnectedFormFeedback));
