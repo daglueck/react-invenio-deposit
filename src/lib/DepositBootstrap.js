@@ -148,6 +148,7 @@ class DepositBootstrapComponent extends Component {
             enableReinitialize: true,
             initialValues: record,
             // errors need to be repopulated after form is reinitialised
+            ...(errors && { initialErrors: errors }),
             ...validationProps
           }}
         >
