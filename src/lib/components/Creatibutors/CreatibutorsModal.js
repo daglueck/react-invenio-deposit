@@ -355,7 +355,7 @@ export class CreatibutorsModal extends Component {
   };
 
   render() {
-    const { initialCreatibutor, autocompleteNames, roleOptions, trigger, action } =
+    const { initialCreatibutor, autocompleteNames, roleOptions, trigger, action, showRole } =
       this.props;
     const { open, showPersonForm, saveAndContinueLabel } = this.state;
 
@@ -526,17 +526,21 @@ export class CreatibutorsModal extends Component {
                         fieldPath={affiliationsFieldPath}
                         selectRef={this.affiliationsRef}
                       />
-                      <SelectField
-                        fieldPath={roleFieldPath}
-                        label={i18next.t("Role")}
-                        options={roleOptions}
-                        placeholder={i18next.t("Select role")}
-                        {...(this.isCreator() && { clearable: true })}
-                        required={!this.isCreator()}
-                        optimized
-                        scrolling
-                      />
-                    </div>
+                      {
+                        showRole && (
+                          <SelectField
+                            fieldPath={roleFieldPath}
+                            label={i18next.t("Role")}
+                            options={roleOptions}
+                            placeholder={i18next.t("Select role")}
+                            {...(this.isCreator() && { clearable: true })}
+                            required={!this.isCreator()}
+                            optimized
+                            scrolling
+                          />
+                        )
+                      }
+                   </div>
                   )}
                 </Form>
               </Modal.Content>
@@ -621,10 +625,12 @@ CreatibutorsModal.propTypes = {
   trigger: PropTypes.object.isRequired,
   onCreatibutorChange: PropTypes.func.isRequired,
   roleOptions: PropTypes.array,
+  showRole: PropTypes.bool,
 };
 
 CreatibutorsModal.defaultProps = {
   roleOptions: [],
   initialCreatibutor: {},
   autocompleteNames: "search",
+  showRole: true,
 };
