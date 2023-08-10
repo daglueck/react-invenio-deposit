@@ -49,12 +49,18 @@ export class CustomField extends Field {
 
   deserialize(record) {
     const _deserialize = (value, i = undefined, isVocabulary = false) => {
-      if (isVocabulary && value?.id) {
-        return value.id;
+      if (
+        typeof value === 'object' &&
+        !Array.isArray(value) &&
+        value !== null
+      ) {
+        if (isVocabulary && value?.id) {
+          return value.id;
+        }
+        // Add __key if i is passed i.e is an array. This is needed because of ArrayField
+        // internal implementation
+        if (i) value.__key = i;
       }
-      // Add __key if i is passed i.e is an array. This is needed because of ArrayField
-      // internal implementation
-      if (i) value.__key = i;
       return value;
     };
     const _record = _cloneDeep(record);
