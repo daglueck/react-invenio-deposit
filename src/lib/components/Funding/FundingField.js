@@ -8,8 +8,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { FieldArray, getIn } from "formik";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { DndProvider } from "react-dnd";
 import { Button, Form, Icon, List } from "semantic-ui-react";
 import { FieldLabel } from "react-invenio-forms";
 
@@ -80,76 +78,74 @@ function FundingFieldForm(props) {
         return { headerContent, descriptionContent, awardOrFunder };
       };
   return (
-    <DndProvider backend={HTML5Backend}>
-      <Form.Field required={required}>
-        <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
-        <List>
-          {getIn(values, fieldPath, []).map((value, index) => {
-            const key = `${fieldPath}.${index}`;
-            // if award does not exist or has no id, it's a custom one
-            const awardType = value?.award?.id ? "standard" : "custom";
-            return (
-              <FundingFieldItem
-                key={key}
-                {...{
-                  index,
-                  compKey: key,
-                  fundingItem: value,
-                  awardType,
-                  moveFunding: formikArrayMove,
-                  replaceFunding: formikArrayReplace,
-                  removeFunding: formikArrayRemove,
-                  searchConfig: searchConfig,
-                  computeFundingContents: computeFundingContents,
-                  deserializeAward: deserializeAward,
-                  deserializeFunder: deserializeFunder,
-                }}
-              />
-            );
-          })}
-          <FundingModal
-            searchConfig={searchConfig}
-            trigger={
-              <Button
-                type="button"
-                key="custom"
-                icon
-                labelPosition="left"
-                className="mb-5"
-              >
-                <Icon name="add" />
-                {i18next.t("Add award")}
-              </Button>
-            }
-            onAwardChange={(selectedFunding) => {
-              formikArrayPush(selectedFunding);
-            }}
-            mode="standard"
-            action="add"
-            deserializeAward={deserializeAward}
-            deserializeFunder={deserializeFunder}
-            computeFundingContents={computeFundingContents}
-          />
-          <FundingModal
-            searchConfig={searchConfig}
-            trigger={
-              <Button type="button" key="custom" icon labelPosition="left">
-                <Icon name="add" />
-                {i18next.t("Add custom")}
-              </Button>
-            }
-            onAwardChange={(selectedFunding) => {
-              formikArrayPush(selectedFunding);
-            }}
-            mode="custom"
-            action="add"
-            deserializeAward={deserializeAward}
-            deserializeFunder={deserializeFunder}
-            computeFundingContents={computeFundingContents}
-          />
-        </List>
-      </Form.Field>
-    </DndProvider>
+    <Form.Field required={required}>
+      <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
+      <List>
+        {getIn(values, fieldPath, []).map((value, index) => {
+          const key = `${fieldPath}.${index}`;
+          // if award does not exist or has no id, it's a custom one
+          const awardType = value?.award?.id ? "standard" : "custom";
+          return (
+            <FundingFieldItem
+              key={key}
+              {...{
+                index,
+                compKey: key,
+                fundingItem: value,
+                awardType,
+                moveFunding: formikArrayMove,
+                replaceFunding: formikArrayReplace,
+                removeFunding: formikArrayRemove,
+                searchConfig: searchConfig,
+                computeFundingContents: computeFundingContents,
+                deserializeAward: deserializeAward,
+                deserializeFunder: deserializeFunder,
+              }}
+            />
+          );
+        })}
+        <FundingModal
+          searchConfig={searchConfig}
+          trigger={
+            <Button
+              type="button"
+              key="custom"
+              icon
+              labelPosition="left"
+              className="mb-5"
+            >
+              <Icon name="add" />
+              {i18next.t("Add award")}
+            </Button>
+          }
+          onAwardChange={(selectedFunding) => {
+            formikArrayPush(selectedFunding);
+          }}
+          mode="standard"
+          action="add"
+          deserializeAward={deserializeAward}
+          deserializeFunder={deserializeFunder}
+          computeFundingContents={computeFundingContents}
+        />
+        <FundingModal
+          searchConfig={searchConfig}
+          trigger={
+            <Button type="button" key="custom" icon labelPosition="left">
+              <Icon name="add" />
+              {i18next.t("Add custom")}
+            </Button>
+          }
+          onAwardChange={(selectedFunding) => {
+            formikArrayPush(selectedFunding);
+          }}
+          mode="custom"
+          action="add"
+          deserializeAward={deserializeAward}
+          deserializeFunder={deserializeFunder}
+          computeFundingContents={computeFundingContents}
+        />
+      </List>
+    </Form.Field>
   );
 }
 

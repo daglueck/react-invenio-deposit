@@ -26,6 +26,8 @@ import {
 import { DepositService } from "./DepositService";
 import { configureStore } from "./store";
 import { RDMUploadProgressNotifier } from "./UploadProgressNotifier";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { DndProvider } from "react-dnd";
 
 export class DepositFormApp extends Component {
   constructor(props) {
@@ -93,14 +95,16 @@ export class DepositFormApp extends Component {
     return ( 
       <Provider store={this.store}>
         <I18nextProvider i18n={i18next}>
-          <DepositBootstrap 
-            validateOnBlur={validateOnBlur}
-            validateOnChange={validateOnChange}
-            validateOnMount={validateOnMount}
-            validationSchema={validationSchema}
-          >
-            {children}
-          </DepositBootstrap>
+          <DndProvider backend={HTML5Backend}>
+            <DepositBootstrap 
+              validateOnBlur={validateOnBlur}
+              validateOnChange={validateOnChange}
+              validateOnMount={validateOnMount}
+              validationSchema={validationSchema}
+            >
+              {children}
+            </DepositBootstrap>
+          </DndProvider>
         </I18nextProvider>
       </Provider>
     );

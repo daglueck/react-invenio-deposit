@@ -12,8 +12,6 @@ import { getIn, FieldArray } from "formik";
 import { Button, Form, Label, List, Icon } from "semantic-ui-react";
 import _get from "lodash/get";
 import { FieldLabel } from "react-invenio-forms";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { DndProvider } from "react-dnd";
 
 import { CreatibutorsModal } from "./CreatibutorsModal";
 import { CreatibutorsFieldItem } from "./CreatibutorsFieldItem";
@@ -72,65 +70,63 @@ class CreatibutorsFieldForm extends Component {
       error || (creatibutorsList === formikInitialValues && initialError);
 
     return (
-      <DndProvider backend={HTML5Backend}>
-        <Form.Field
-          required={schema === "creators"}
-          className={creatibutorsError ? "error" : ""}
-        >
-          <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
-          <List>
-            {creatibutorsList.map((value, index) => {
-              const key = `${fieldPath}.${index}`;
-              const identifiersError =
-                creatibutorsError &&
-                creatibutorsError[index]?.person_or_org?.identifiers;
-              const displayName = creatibutorNameDisplay(value);
+      <Form.Field
+        required={schema === "creators"}
+        className={creatibutorsError ? "error" : ""}
+      >
+        <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
+        <List>
+          {creatibutorsList.map((value, index) => {
+            const key = `${fieldPath}.${index}`;
+            const identifiersError =
+              creatibutorsError &&
+              creatibutorsError[index]?.person_or_org?.identifiers;
+            const displayName = creatibutorNameDisplay(value);
 
-              return (
-                <CreatibutorsFieldItem
-                  key={key}
-                  identifiersError={identifiersError}
-                  {...{
-                    displayName,
-                    index,
-                    roleOptions,
-                    schema,
-                    compKey: key,
-                    initialCreatibutor: value,
-                    removeCreatibutor: formikArrayRemove,
-                    replaceCreatibutor: formikArrayReplace,
-                    moveCreatibutor: formikArrayMove,
-                    addLabel: modal.addLabel,
-                    editLabel: modal.editLabel,
-                    autocompleteNames: autocompleteNames,
-                  }}
-                />
-              );
-            })}
-            <CreatibutorsModal
-              onCreatibutorChange={this.handleOnContributorChange}
-              action="add"
-              addLabel={modal.addLabel}
-              editLabel={modal.editLabel}
-              roleOptions={sortOptions(roleOptions)}
-              schema={schema}
-              autocompleteNames={autocompleteNames}
-              trigger={
-                <Button type="button" icon labelPosition="left">
-                  <Icon name="add" />
-                  {addButtonLabel}
-                </Button>
-              }
-              showRole={showRole}
-            />
-            {creatibutorsError && typeof creatibutorsError == "string" && (
-              <Label pointing="left" prompt>
-                {creatibutorsError}
-              </Label>
-            )}
-          </List>
-        </Form.Field>
-      </DndProvider>
+            return (
+              <CreatibutorsFieldItem
+                key={key}
+                identifiersError={identifiersError}
+                {...{
+                  displayName,
+                  index,
+                  roleOptions,
+                  schema,
+                  compKey: key,
+                  initialCreatibutor: value,
+                  removeCreatibutor: formikArrayRemove,
+                  replaceCreatibutor: formikArrayReplace,
+                  moveCreatibutor: formikArrayMove,
+                  addLabel: modal.addLabel,
+                  editLabel: modal.editLabel,
+                  autocompleteNames: autocompleteNames,
+                }}
+              />
+            );
+          })}
+          <CreatibutorsModal
+            onCreatibutorChange={this.handleOnContributorChange}
+            action="add"
+            addLabel={modal.addLabel}
+            editLabel={modal.editLabel}
+            roleOptions={sortOptions(roleOptions)}
+            schema={schema}
+            autocompleteNames={autocompleteNames}
+            trigger={
+              <Button type="button" icon labelPosition="left">
+                <Icon name="add" />
+                {addButtonLabel}
+              </Button>
+            }
+            showRole={showRole}
+          />
+          {creatibutorsError && typeof creatibutorsError == "string" && (
+            <Label pointing="left" prompt>
+              {creatibutorsError}
+            </Label>
+          )}
+        </List>
+      </Form.Field>
     );
   }
 }

@@ -10,8 +10,6 @@ import _find from "lodash/find";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { getIn, FieldArray } from "formik";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { DndProvider } from "react-dnd";
 import { FieldLabel } from "react-invenio-forms";
 import { Button, Form, Icon, List } from "semantic-ui-react";
 
@@ -78,58 +76,56 @@ class LicenseFieldForm extends Component {
     const displayAddButtons = rights.length < maxLicenses;
 
     return (
-      <DndProvider backend={HTML5Backend}>
-        <Form.Field required={required}>
-          <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
-          <List>
-            {rights.map((value, index) => {
-              const license = new VisibleLicense(uiRights, value, index);
-              return (
-                <LicenseFieldItem
-                  key={license.key}
-                  license={license}
-                  moveLicense={formikArrayMove}
-                  replaceLicense={formikArrayReplace}
-                  removeLicense={formikArrayRemove}
-                  searchConfig={searchConfig}
-                  serializeLicenses={serializeLicenses}
-                />
-              );
-            })}
-            {displayAddButtons && <>
-            <LicenseModal
-              searchConfig={searchConfig}
-              trigger={
-                <Button type="button" key="standard" icon labelPosition="left">
-                  <Icon name="add" />
-                  {i18next.t("Add standard")}
-                </Button>
-              }
-              onLicenseChange={(selectedLicense) => {
-                formikArrayPush(selectedLicense);
-              }}
-              mode="standard"
-              action="add"
-              serializeLicenses={serializeLicenses}
-            />
-            <LicenseModal
-              searchConfig={searchConfig}
-              trigger={
-                <Button type="button" key="custom" icon labelPosition="left">
-                  <Icon name="add" />
-                  {i18next.t("Add custom")}
-                </Button>
-              }
-              onLicenseChange={(selectedLicense) => {
-                formikArrayPush(selectedLicense);
-              }}
-              mode="custom"
-              action="add"
-            />
-            </>}
-          </List>
-        </Form.Field>
-      </DndProvider>
+      <Form.Field required={required}>
+        <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
+        <List>
+          {rights.map((value, index) => {
+            const license = new VisibleLicense(uiRights, value, index);
+            return (
+              <LicenseFieldItem
+                key={license.key}
+                license={license}
+                moveLicense={formikArrayMove}
+                replaceLicense={formikArrayReplace}
+                removeLicense={formikArrayRemove}
+                searchConfig={searchConfig}
+                serializeLicenses={serializeLicenses}
+              />
+            );
+          })}
+          {displayAddButtons && <>
+          <LicenseModal
+            searchConfig={searchConfig}
+            trigger={
+              <Button type="button" key="standard" icon labelPosition="left">
+                <Icon name="add" />
+                {i18next.t("Add standard")}
+              </Button>
+            }
+            onLicenseChange={(selectedLicense) => {
+              formikArrayPush(selectedLicense);
+            }}
+            mode="standard"
+            action="add"
+            serializeLicenses={serializeLicenses}
+          />
+          <LicenseModal
+            searchConfig={searchConfig}
+            trigger={
+              <Button type="button" key="custom" icon labelPosition="left">
+                <Icon name="add" />
+                {i18next.t("Add custom")}
+              </Button>
+            }
+            onLicenseChange={(selectedLicense) => {
+              formikArrayPush(selectedLicense);
+            }}
+            mode="custom"
+            action="add"
+          />
+          </>}
+        </List>
+      </Form.Field>
     );
   }
 }
