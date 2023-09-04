@@ -24,6 +24,7 @@ export class AccessRightFieldCmp extends Component {
       label,
       labelIcon,
       community,
+      help,
     } = this.props;
 
     const communityAccess = community?.access.visibility || "public";
@@ -37,6 +38,11 @@ export class AccessRightFieldCmp extends Component {
               <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
             </Card.Header>
           </Card.Content>
+          {help && (
+            <Card.Content>
+              {help}
+            </Card.Content>
+          )}
           <Card.Content>
             <MetadataAccess
               recordAccess={formik.field.value.record}
@@ -117,9 +123,11 @@ AccessRightField.propTypes = {
   label: PropTypes.string.isRequired,
   labelIcon: PropTypes.string,
   isMetadataOnly: PropTypes.bool,
+  help: PropTypes.any,
 };
 
 AccessRightField.defaultProps = {
   labelIcon: undefined,
   isMetadataOnly: undefined,
+  help: undefined,
 };
