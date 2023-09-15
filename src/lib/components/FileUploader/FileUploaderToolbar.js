@@ -17,7 +17,7 @@ import Overridable from "react-overridable";
 // NOTE: This component has to be a function component to allow
 //       the `useFormikContext` hook.
 export const FileUploaderToolbar = (props) => {
-  const { config, filesList, filesSize, filesEnabled, quota, decimalSizeDisplay } =
+  const { config, filesList, filesSize, filesEnabled, quota, decimalSizeDisplay, metadataOnlyCheckboxLabel } =
     props;
   const { setFieldValue } = useFormikContext();
 
@@ -40,7 +40,7 @@ export const FileUploaderToolbar = (props) => {
             <List horizontal>
               <List.Item>
                 <Checkbox
-                  label={i18next.t("Metadata-only record")}
+                  label={metadataOnlyCheckboxLabel}
                   onChange={handleOnChangeMetadataOnly}
                   disabled={filesList.length > 0}
                   checked={!filesEnabled}
@@ -99,6 +99,7 @@ FileUploaderToolbar.propTypes = {
   filesEnabled: PropTypes.bool.isRequired,
   quota: PropTypes.object,
   decimalSizeDisplay: PropTypes.bool,
+  metadataOnlyCheckboxLabel: PropTypes.string.isRequired,
 };
 
 FileUploaderToolbar.defaultProps = {
@@ -107,4 +108,5 @@ FileUploaderToolbar.defaultProps = {
   filesSize: undefined,
   quota: undefined,
   decimalSizeDisplay: false,
+  metadataOnlyCheckboxLabel: i18next.t("Metadata-only record"),
 };
