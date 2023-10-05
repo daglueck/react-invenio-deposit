@@ -59,6 +59,7 @@ class CreatibutorsFieldForm extends Component {
       autocompleteNames,
       addButtonLabel,
       showRole,
+      showPersonSearch,
     } = this.props;
 
     const creatibutorsList = getIn(values, fieldPath, []);
@@ -119,6 +120,7 @@ class CreatibutorsFieldForm extends Component {
               </Button>
             }
             showRole={showRole}
+            showPersonSearch={showPersonSearch}
           />
           {creatibutorsError && typeof creatibutorsError == "string" && (
             <Label pointing="left" prompt>
@@ -165,6 +167,7 @@ CreatibutorsFieldForm.propTypes = {
   push: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
   showRole: PropTypes.bool,
+  showPersonSearch: PropTypes.bool,
 };
 
 CreatibutorsFieldForm.defaultProps = {
@@ -191,6 +194,7 @@ CreatibutorsField.propTypes = {
   labelIcon: PropTypes.string,
   roleOptions: PropTypes.array,
   showRole: PropTypes.bool,
+  showPersonSearch: PropTypes.bool,
 };
 
 CreatibutorsField.defaultProps = {

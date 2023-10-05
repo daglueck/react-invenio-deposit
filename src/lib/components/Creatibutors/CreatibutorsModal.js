@@ -355,7 +355,7 @@ export class CreatibutorsModal extends Component {
   };
 
   render() {
-    const { initialCreatibutor, autocompleteNames, roleOptions, trigger, action, showRole } =
+    const { initialCreatibutor, autocompleteNames, roleOptions, trigger, action, showRole, showPersonSearch } =
       this.props;
     const { open, showPersonForm, saveAndContinueLabel } = this.state;
 
@@ -435,7 +435,7 @@ export class CreatibutorsModal extends Component {
                   </Form.Group>
                   {_get(values, typeFieldPath, "") === CREATIBUTOR_TYPE.PERSON ? (
                     <div>
-                      {autocompleteNames !== NamesAutocompleteOptions.OFF && (
+                      {showPersonSearch && autocompleteNames !== NamesAutocompleteOptions.OFF && (
                         <RemoteSelectField
                           selectOnBlur={false}
                           selectOnNavigation={false}
@@ -626,6 +626,7 @@ CreatibutorsModal.propTypes = {
   onCreatibutorChange: PropTypes.func.isRequired,
   roleOptions: PropTypes.array,
   showRole: PropTypes.bool,
+  showPersonSearch: PropTypes.bool,
 };
 
 CreatibutorsModal.defaultProps = {
@@ -633,4 +634,5 @@ CreatibutorsModal.defaultProps = {
   initialCreatibutor: {},
   autocompleteNames: "search",
   showRole: true,
+  showPersonSearch: true,
 };
